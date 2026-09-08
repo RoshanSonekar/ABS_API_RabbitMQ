@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.79" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ABS.Notification.Core\ABS.Notification.Core.csproj" />
+  </ItemGroup>
+  
 </Project>

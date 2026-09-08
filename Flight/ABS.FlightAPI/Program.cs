@@ -1,10 +1,24 @@
+using ABS.Flight.Infrastructure.Repositories;
+using ABS.Flight.Core.Repositories;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+// Application Services
+builder.Services.AddScoped<IFlightRepository, FlightRepository>();
+
+// SQL Connection for Dapper
+builder.Services.AddScoped<IDbConnection>(sp =>
+new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
@@ -14,10 +28,14 @@ if (app.Environment.IsDevelopment())
 	app.MapOpenApi();
 }
 
+app.UseHealthChecks("/health",
+	new HealthCheckOptions
+	{
+		ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+	});
+
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

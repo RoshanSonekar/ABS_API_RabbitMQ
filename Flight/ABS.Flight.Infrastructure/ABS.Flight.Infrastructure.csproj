@@ -5,5 +5,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.79" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\ABS.Flight.Core\ABS.Flight.Core.csproj" />
+  </ItemGroup>
 
 </Project>

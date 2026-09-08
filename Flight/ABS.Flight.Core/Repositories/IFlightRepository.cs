@@ -6,6 +6,6 @@ public interface IFlightRepository
 {
 	Task<IEnumerable<FlightEntity>> GetAllFlightsAsync();
 	Task AddFlightAsync(FlightEntity flight);
-	Task RemoveFlightAsync(FlightEntity flight); 
-	//Task<FlightEntity> GetFlightByIdAsync(Guid id);
+	Task RemoveFlightAsync(Guid id); 
+	Task<FlightEntity> GetFlightByIdAsync(Guid id);
 }
