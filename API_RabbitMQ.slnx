@@ -1,0 +1,30 @@
+<Solution>
+  <Folder Name="/BuildingBlocks/" />
+  <Folder Name="/BuildingBlocks/Common/" />
+  <Folder Name="/BuildingBlocks/Contracts/" />
+  <Folder Name="/Services/" />
+  <Folder Name="/Services/Booking/">
+    <Project Path="FlightBookingAPI/ABS.Booking.Application/ABS.Booking.Application.csproj" />
+    <Project Path="FlightBookingAPI/ABS.Booking.Core/ABS.Booking.Core.csproj" />
+    <Project Path="FlightBookingAPI/ABS.Booking.Infrastructure/ABS.Booking.Infrastructure.csproj" />
+    <Project Path="FlightBookingAPI/ABS.BookingAPI/ABS.BookingAPI.csproj" />
+  </Folder>
+  <Folder Name="/Services/Flight/">
+    <Project Path="Flight/ABS.Flight.Application/ABS.Flight.Application.csproj" />
+    <Project Path="Flight/ABS.Flight.Core/ABS.Flight.Core.csproj" />
+    <Project Path="Flight/ABS.Flight.Infrastructure/ABS.Flight.Infrastructure.csproj" />
+    <Project Path="Flight/ABS.FlightAPI/ABS.FlightAPI.csproj" />
+  </Folder>
+  <Folder Name="/Services/Notification/">
+    <Project Path="Notification/ABS.Notification.Application/ABS.Notification.Application.csproj" />
+    <Project Path="Notification/ABS.Notification.Core/ABS.Notification.Core.csproj" />
+    <Project Path="Notification/ABS.Notification.Infrastructure/ABS.Notification.Infrastructure.csproj" />
+    <Project Path="Notification/ABS.NotificationAPI/ABS.NotificationAPI.csproj" />
+  </Folder>
+  <Folder Name="/Services/Payment/">
+    <Project Path="Payment/ABS.Payments.Application/ABS.Payments.Application.csproj" />
+    <Project Path="Payment/ABS.Payments.Core/ABS.Payments.Core.csproj" />
+    <Project Path="Payment/ABS.Payments.Infrastructure/ABS.Payments.Infrastructure.csproj" />
+    <Project Path="Payment/ABS.PaymentsAPI/ABS.PaymentsAPI.csproj" />
+  </Folder>
+</Solution>

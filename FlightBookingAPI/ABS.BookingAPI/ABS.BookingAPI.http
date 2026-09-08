@@ -1,0 +1,6 @@
+@ABS.BookingAPI_HostAddress = http://localhost:5180
+
+GET {{ABS.BookingAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
