@@ -16,8 +16,8 @@ public class BookingRepository : IBookingRepository
 	public async Task AddBookingAsync(BookingEntity booking)
 	{
 		const string sql = @"
-			INSERT INTO Bookings (Id, FlightId, PassangerName, SeatNumber, BookingDate)
-			VALUES (@Id, @FlightId, @PassangerName, @SeatNumber, @BookingDate)";	
+			INSERT INTO Bookings (Id, FlightId, PassengerName, SeatNumber, BookingDate)
+			VALUES (@Id, @FlightId, @PassengerName, @SeatNumber, @BookingDate)";	
 		
 		await _dbConnection.ExecuteAsync(sql, booking);
 	}
@@ -25,10 +25,10 @@ public class BookingRepository : IBookingRepository
 	public async Task<BookingEntity> GetBookingByIdAsync(Guid id)
 	{
 		const string sql = @"
-			SELECT Id, FlightId, PassangerName, SeatNumber, BookingDate
+			SELECT Id, FlightId, PassengerName, SeatNumber, BookingDate
 			FROM Bookings
-			WHERE Id = @Id";	
+			WHERE Id = @Id";
 
-		return await _dbConnection.QuerySingleOrDefaultAsync<BookingEntity>(sql, new { Id = id }	);
+		return await _dbConnection.QuerySingleOrDefaultAsync<BookingEntity>(sql, new { Id = id });
 	}
 }

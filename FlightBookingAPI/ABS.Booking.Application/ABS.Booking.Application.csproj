@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\BuildingBlocks.csproj" />
+    <ProjectReference Include="..\ABS.Booking.Core\ABS.Booking.Core.csproj" />
+    <ProjectReference Include="..\ABS.Booking.Infrastructure\ABS.Booking.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

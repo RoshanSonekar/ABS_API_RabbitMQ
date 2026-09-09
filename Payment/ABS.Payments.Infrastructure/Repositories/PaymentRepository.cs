@@ -16,16 +16,17 @@ namespace ABS.Payments.Infrastructure.Repositories
 		public async Task ProcessPaymentAsync(PaymentEntity payment)
 		{
 			const string sql = @"
-				INSERT INTO Payments (Id, Amount, Currency, Status)
-				VALUES (@Id, @Amount, @Currency, @Status)";
+				INSERT INTO Payments (Id, BookingId, Amount, PaymentDate)
+				VALUES (@Id, @BookingId, @Amount, @PaymentDate)";
 
 			await _dbConnection.ExecuteAsync(sql, payment);
 		}
 
 		public async Task RefundPaymentAsync(Guid id)
 		{
-			const string sql = "UPDATE Payments SET Status = 'Refunded' WHERE Id = @Id";
-			await _dbConnection.ExecuteAsync(sql, new { Id = id });
+			throw new NotImplementedException();
+			//const string sql = "UPDATE Payments SET Status = 'Refunded' WHERE Id = @Id";
+			//await _dbConnection.ExecuteAsync(sql, new { Id = id });
 		}
 	}
 }
