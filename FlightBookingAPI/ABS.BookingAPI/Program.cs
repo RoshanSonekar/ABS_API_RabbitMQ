@@ -1,6 +1,7 @@
 using ABS.Booking.Core.Repositories;
 using ABS.Booking.Infrastructure.Repositories;
 using BuildingBlocks.Behaviors;
+using FluentValidation;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Data.SqlClient;
@@ -10,14 +11,14 @@ using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly;
-// Add services to the container.
 
+// Add services to the container.
 builder.Services.AddControllers(); 
 builder.Services.AddOpenApi();
 
 // SQL Connection for Dapper
-builder.Services.AddScoped<IDbConnection>(sp => 
-new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddScoped<IDbConnection>(sp => new SqlConnection(connectionString));
 
 // Application Services MediatR
 builder.Services.AddMediatR(config =>
@@ -27,19 +28,21 @@ builder.Services.AddMediatR(config =>
 	config.AddOpenBehavior(typeof(LoggingBehavior<,>));
 });
 
+// Add FluentValidation services
+builder.Services.AddValidatorsFromAssembly(assembly);
+
 // Explicitly register the GetBooking handler from the Application project
-builder.Services.AddTransient<MediatR.IRequestHandler<ABS.Booking.Application.GetBooking.GetBookingQuery, ABS.Booking.Application.GetBooking.GetBookingResult>, ABS.Booking.Application.GetBooking.GetBookingQueryHandler>();
-builder.Services.AddTransient<MediatR.IRequestHandler<ABS.Booking.Application.AddBooking.AddBookingCommand, ABS.Booking.Application.AddBooking.AddBookingResult>, ABS.Booking.Application.AddBooking.AddBookingCommandHandler>();
+builder.Services.AddTransient<MediatR.IRequestHandler<ABS.Booking.Application.Query.GetBookingQuery, ABS.Booking.Application.Query.GetBookingResult>, ABS.Booking.Application.Query.BookingQueryHandler>();
+builder.Services.AddTransient<MediatR.IRequestHandler<ABS.Booking.Application.Command.AddBookingCommand, ABS.Booking.Application.Command.AddBookingResult>, ABS.Booking.Application.Command.BookingCommandHandler>();
 
 // Application Services
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
-
 
 // Cross-Cutting Services
 // 1. Register Health Check Services
 builder.Services.AddHealthChecks()
 		.AddSqlServer(
-				connectionString: builder.Configuration.GetConnectionString("DefaultConnection"),
+				connectionString: connectionString,
 				healthQuery: "SELECT 1;", // Default, but can be customized
 				name: "sql-server",
 				tags: new[] { "ready" }

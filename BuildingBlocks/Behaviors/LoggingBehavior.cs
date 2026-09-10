@@ -22,7 +22,8 @@ namespace BuildingBlocks.Behaviors
 
 			timer.Stop();
 			var timeTaken = timer.Elapsed;
-			if (timeTaken.Seconds > 3) // If request is greater than 3 sec then log performance
+			// read set threshold from config. If request is taking greater than 3(threshold value) sec then log performance
+			if (timeTaken.Seconds > 3) 
 				logger.LogWarning("[PERFORMANCE] The request {Request} took {TImeTaken}",
 					typeof(TRequest).Name, timeTaken.Seconds);
 

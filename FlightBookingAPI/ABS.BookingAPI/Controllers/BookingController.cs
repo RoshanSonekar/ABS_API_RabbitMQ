@@ -1,5 +1,5 @@
-﻿using ABS.Booking.Application.AddBooking;
-using ABS.Booking.Application.GetBooking;
+﻿using ABS.Booking.Application.Command;
+using ABS.Booking.Application.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

@@ -21,6 +21,7 @@ public class FlightRepository : IFlightRepository
 
 		await _dbConnection.ExecuteAsync(sql, flight);
 	}
+
 	public async Task RemoveFlightAsync(Guid id)
 	{
 		const string sql = @"
@@ -30,13 +31,32 @@ public class FlightRepository : IFlightRepository
 		await _dbConnection.ExecuteAsync(sql, new { Id = id });
 	}
 
-	public async Task<IEnumerable<FlightEntity>> GetAllFlightsAsync()
+	public async Task<IEnumerable<FlightEntity>> GetAllFlightsAsync(int? pageNumber = 1, int? pageSize = 10)
+	{ 
+		const string sql = @"
+			SELECT Id, FlightNumber, Origin, Destination, DepartureTime, ArrivalTime
+			FROM Flights
+			ORDER BY Id
+			OFFSET @offset ROWS
+			FETCH NEXT @pageSize  ROWS ONLY";
+
+		var offset = (pageNumber - 1) * pageSize;
+		return await _dbConnection.QueryAsync<FlightEntity>(sql, new { Offset = offset, PageSize = pageSize });
+	}
+
+	public async Task<FlightEntity> GetFlightByFlightNumberAsync(string flightNumber)
 	{
 		const string sql = @"
 			SELECT Id, FlightNumber, Origin, Destination, DepartureTime, ArrivalTime
-			FROM Flights";
+			FROM Flights
+			WHERE FlightNumber = @FlightNumber";
 
-		return await _dbConnection.QueryAsync<FlightEntity>(sql);
+		var flightEntity = await _dbConnection.QuerySingleOrDefaultAsync<FlightEntity>(sql, new { FlightNumber = flightNumber });
+
+		if (flightEntity is null)
+			return new FlightEntity();
+
+		return flightEntity;
 	}
 
 	public async Task<FlightEntity> GetFlightByIdAsync(Guid id)
@@ -46,6 +66,10 @@ public class FlightRepository : IFlightRepository
 			FROM Flights
 			WHERE Id = @Id";
 
-		return await _dbConnection.QuerySingleAsync<FlightEntity>(sql, new { Id = id });
+		var flightEntity = await _dbConnection.QueryFirstOrDefaultAsync<FlightEntity>(sql, new { Id = id });
+		if (flightEntity is null)
+			return new FlightEntity();	
+
+		return flightEntity;
 	}
 }

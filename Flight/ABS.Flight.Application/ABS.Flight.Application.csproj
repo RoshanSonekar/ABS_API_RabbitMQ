@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\BuildingBlocks.csproj" />
+    <ProjectReference Include="..\ABS.Flight.Core\ABS.Flight.Core.csproj" />
+    <ProjectReference Include="..\ABS.Flight.Infrastructure\ABS.Flight.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

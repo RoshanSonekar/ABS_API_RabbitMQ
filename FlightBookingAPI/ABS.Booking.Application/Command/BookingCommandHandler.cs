@@ -3,7 +3,7 @@ using ABS.Booking.Core.Repositories;
 using BuildingBlocks.CQRS;
 using FluentValidation;
 
-namespace ABS.Booking.Application.AddBooking;
+namespace ABS.Booking.Application.Command;
 
 public record AddBookingResult(Guid Id, bool IsSuccess);
 public record AddBookingCommand(
@@ -24,7 +24,7 @@ public class AddBookingCommandValidator : AbstractValidator<AddBookingCommand>
 	}
 }
 
-public class AddBookingCommandHandler(IBookingRepository bookingRepository1)
+public class BookingCommandHandler(IBookingRepository bookingRepository1)
 	: ICommandHandler<AddBookingCommand, AddBookingResult>
 {
 	public async Task<AddBookingResult> Handle(AddBookingCommand command, CancellationToken cancellationToken)

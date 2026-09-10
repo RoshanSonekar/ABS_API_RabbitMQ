@@ -29,6 +29,10 @@ public class BookingRepository : IBookingRepository
 			FROM Bookings
 			WHERE Id = @Id";
 
-		return await _dbConnection.QuerySingleOrDefaultAsync<BookingEntity>(sql, new { Id = id });
+		var bookingEntity =  await _dbConnection.QuerySingleOrDefaultAsync<BookingEntity>(sql, new { Id = id });
+		if(bookingEntity == null) 
+			return new BookingEntity();
+
+		return bookingEntity;
 	}
 }
