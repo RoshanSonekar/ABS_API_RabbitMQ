@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\BuildingBlocks.csproj" />
+    <ProjectReference Include="..\ABS.Notification.Core\ABS.Notification.Core.csproj" />
+    <ProjectReference Include="..\ABS.Notification.Infrastructure\ABS.Notification.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

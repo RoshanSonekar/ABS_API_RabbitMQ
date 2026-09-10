@@ -44,11 +44,6 @@ builder.Services.AddTransient<MediatR.IRequestHandler<ABS.Flight.Application.Com
 // Application Services
 builder.Services.AddScoped<IFlightRepository, FlightRepository>();
 
-// SQL Connection for Dapper
-builder.Services.AddScoped<IDbConnection>(sp =>
-new SqlConnection(connectionString));
-
-
 // Cross-Cutting Services
 // 1. Register Health Check Services
 builder.Services.AddHealthChecks()

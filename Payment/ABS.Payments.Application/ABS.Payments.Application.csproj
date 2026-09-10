@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks\BuildingBlocks.csproj" />
+    <ProjectReference Include="..\ABS.Payments.Core\ABS.Payments.Core.csproj" />
+    <ProjectReference Include="..\ABS.Payments.Infrastructure\ABS.Payments.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
