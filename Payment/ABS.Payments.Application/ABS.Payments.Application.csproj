@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MassTransit.RabbitMQ" Version="9.2.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks.Transit\BuildingBlocks.Transit.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\BuildingBlocks.csproj" />
     <ProjectReference Include="..\ABS.Payments.Core\ABS.Payments.Core.csproj" />
     <ProjectReference Include="..\ABS.Payments.Infrastructure\ABS.Payments.Infrastructure.csproj" />

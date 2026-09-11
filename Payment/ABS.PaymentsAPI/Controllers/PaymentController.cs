@@ -23,15 +23,13 @@ namespace ABS.PaymentsAPI.Controllers
 			return CreatedAtAction(nameof(ProcessPayement), new { id = result.Id }, result);
 		}
 
-
 		[HttpGet("{id}")]
 		public async Task<IActionResult> ProcessPayement(Guid id)
 		{
-
 			return Ok((new
 			{
 				Id = id,
-				Message = $"Notification logged with id	{id}"
+				Message = $"Payment created with id	{id}"
 			}));
 		}
 	}

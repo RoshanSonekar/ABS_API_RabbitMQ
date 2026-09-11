@@ -1,8 +1,11 @@
+using ABS.Notification.Application.Consumers;
 using ABS.Notification.Core.Repositories;
 using ABS.Notification.Infrastructure.Repositories;
 using BuildingBlocks.Behaviors;
+using BuildingBlocks.Transit.Common;
 using FluentValidation;
 using HealthChecks.UI.Client;
+using MassTransit;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -37,10 +40,24 @@ builder.Services.AddMediatR(config =>
 builder.Services.AddValidatorsFromAssembly(assembly);
 
 // Explicitly register the flight handlers from the Application project
-builder.Services.AddTransient<MediatR.IRequestHandler<ABS.Notification.Application.Command.AddNotificationCommand, ABS.Notification.Application.Command.AddNotificationResult>, ABS.Notification.Application.Command.NotificationCommandHandler>();
+builder.Services.AddTransient<MediatR.IRequestHandler<ABS.Notification.Application.Command.SendNotificationCommand, ABS.Notification.Application.Command.SendNotificationResult>, ABS.Notification.Application.Command.NotificationCommandHandler>();
 
 // Application Services
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+
+// MassTransit Configuration
+builder.Services.AddMassTransit(config =>
+{
+	config.AddConsumer<PaymentProcessedConsumer>();
+	config.UsingRabbitMq((context, cfg) =>
+	{
+		cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+		cfg.ReceiveEndpoint(EventBusConstants.PaymentProcessedQueue, c =>
+		{
+			c.ConfigureConsumer<PaymentProcessedConsumer>(context);
+		});
+	});
+});
 
 // Cross-Cutting Services
 // 1. Register Health Check Services

@@ -5,13 +5,13 @@ using FluentValidation;
 
 namespace ABS.Notification.Application.Command;
 
-public record AddNotificationResult(Guid Id, bool IsSuccess);
-public record AddNotificationCommand(string Recipient, string Message, string Type, DateTime SentAt) : ICommand<AddNotificationResult>;
+public record SendNotificationResult(Guid Id, bool IsSuccess);
+public record SendNotificationCommand(string Recipient, string Message, string Type, DateTime SentAt) : ICommand<SendNotificationResult>;
 
 public class NotificationCommandHandler(INotificationRepository notificationRepository)
-	: ICommandHandler<AddNotificationCommand, AddNotificationResult>
+	: ICommandHandler<SendNotificationCommand, SendNotificationResult>
 {
-	public async Task<AddNotificationResult> Handle(AddNotificationCommand request, CancellationToken cancellationToken)
+	public async Task<SendNotificationResult> Handle(SendNotificationCommand request, CancellationToken cancellationToken)
 	{
 		Console.WriteLine($"Handling AddNotificationCommand: Recipient={request.Recipient}, Message={request.Message}, Type={request.Type}");
 
@@ -25,6 +25,8 @@ public class NotificationCommandHandler(INotificationRepository notificationRepo
 		};
 
 		await notificationRepository.LogNotificationAsync(notification);
-		return new AddNotificationResult(notification.Id, true);
+		
+		Console.WriteLine($"Notification logged successfully. Id = {notification.Id}");
+		return new SendNotificationResult(notification.Id, true);
 	}
 }

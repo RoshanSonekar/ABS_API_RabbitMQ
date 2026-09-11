@@ -1,13 +1,15 @@
 ﻿using ABS.Payments.Core.Entities;
 using ABS.Payments.Core.Repositories;
 using BuildingBlocks.CQRS;
+using BuildingBlocks.Transit.Contracts.EventBus.Messages;
 using FluentValidation;
+using MassTransit;
 
 namespace ABS.Payments.Application.Command;
 public record ProcessPaymentResult(Guid Id, bool IsSuccess);
 public record ProcessPaymentCommand(decimal Amount, Guid BookingId, DateTime PaymentDate) : ICommand<ProcessPaymentResult>;
 
-public class PaymentCommandHandler(IPaymentRepository paymentRepository)
+public class PaymentCommandHandler(IPaymentRepository paymentRepository, IPublishEndpoint publishEndpoint)
 	: ICommandHandler<ProcessPaymentCommand, ProcessPaymentResult>
 {
 	public async Task<ProcessPaymentResult> Handle(ProcessPaymentCommand command, CancellationToken cancellationToken)
@@ -20,7 +22,16 @@ public class PaymentCommandHandler(IPaymentRepository paymentRepository)
 			PaymentDate = DateTime.UtcNow
 			//PaymentMethod = command.PaymentMethod
 		};
+		
 		await paymentRepository.ProcessPaymentAsync(payment);
+
+		// publish payment processed event
+		await publishEndpoint.Publish(new PaymentProcessedEvent
+			(payment.Id, 
+			payment.BookingId, 
+			payment.Amount, 
+			payment.PaymentDate), cancellationToken);
+
 		return new ProcessPaymentResult(payment.Id, true);
 	}
 }

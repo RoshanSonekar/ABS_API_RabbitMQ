@@ -25,6 +25,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks.Transit\BuildingBlocks.Transit.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\BuildingBlocks.csproj" />
     <ProjectReference Include="..\ABS.Notification.Application\ABS.Notification.Application.csproj" />
     <ProjectReference Include="..\ABS.Notification.Core\ABS.Notification.Core.csproj" />

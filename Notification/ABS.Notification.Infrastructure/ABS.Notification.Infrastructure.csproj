@@ -7,10 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.1.79" />
+    <PackageReference Include="Dapper" Version="2.1.79" /> 
+    <PackageReference Include="MassTransit.RabbitMQ" Version="9.2.1" />
   </ItemGroup>
-
   <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks.Transit\BuildingBlocks.Transit.csproj" />
     <ProjectReference Include="..\ABS.Notification.Core\ABS.Notification.Core.csproj" />
   </ItemGroup>
   

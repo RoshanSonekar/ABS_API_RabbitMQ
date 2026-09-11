@@ -17,7 +17,7 @@ namespace ABS.NotificationAPI.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> LogNotification([FromBody] AddNotificationCommand command)
+		public async Task<IActionResult> LogNotification([FromBody] SendNotificationCommand command)
 		{
 			var result = await _mediatR.Send(command);
 			return CreatedAtAction(nameof(GetLoggedNotification), new { id = result.Id }, result);

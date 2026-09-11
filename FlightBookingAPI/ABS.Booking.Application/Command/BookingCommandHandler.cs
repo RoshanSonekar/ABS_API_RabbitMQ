@@ -1,7 +1,9 @@
 ﻿using ABS.Booking.Core.Entities;
 using ABS.Booking.Core.Repositories;
 using BuildingBlocks.CQRS;
+using BuildingBlocks.Transit.Contracts.EventBus.Messages;
 using FluentValidation;
+using MassTransit;
 
 namespace ABS.Booking.Application.Command;
 
@@ -24,12 +26,12 @@ public class AddBookingCommandValidator : AbstractValidator<AddBookingCommand>
 	}
 }
 
-public class BookingCommandHandler(IBookingRepository bookingRepository1)
+public class BookingCommandHandler(IBookingRepository bookingRepository, IPublishEndpoint publishEndpoint)
 	: ICommandHandler<AddBookingCommand, AddBookingResult>
 {
 	public async Task<AddBookingResult> Handle(AddBookingCommand command, CancellationToken cancellationToken)
 	{
-		var book = new BookingEntity
+		var booking = new BookingEntity
 		{
 			Id = Guid.NewGuid(),
 			FlightId = command.FlightId,
@@ -38,8 +40,17 @@ public class BookingCommandHandler(IBookingRepository bookingRepository1)
 			BookingDate = command.BookingDate
 		};
 
-		await bookingRepository1.AddBookingAsync(book);
+		await bookingRepository.AddBookingAsync(booking);
+
+		// publish flight booked event to message broker
+		await publishEndpoint.Publish(new FlightBookedEvent(
+			booking.Id,
+			booking.FlightId,
+			booking.PassengerName,
+			booking.SeatNumber,
+			booking.BookingDate
+			), cancellationToken);
 		
-		return new AddBookingResult(book.Id, true);
+		return new AddBookingResult(booking.Id, true);
 	}
 }

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MassTransit.RabbitMQ" Version="9.2.1" />
     <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="9.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="9.0.0" />
@@ -25,6 +26,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\..\BuildingBlocks.Transit\BuildingBlocks.Transit.csproj" />
     <ProjectReference Include="..\..\BuildingBlocks\BuildingBlocks.csproj" />
     <ProjectReference Include="..\ABS.Payments.Application\ABS.Payments.Application.csproj" />
     <ProjectReference Include="..\ABS.Payments.Core\ABS.Payments.Core.csproj" />

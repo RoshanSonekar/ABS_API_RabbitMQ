@@ -1,9 +1,10 @@
 <Solution>
+  <Folder Name="/BuildingBlocks.Transit/">
+    <Project Path="BuildingBlocks.Transit/BuildingBlocks.Transit.csproj" />
+  </Folder>
   <Folder Name="/BuildingBlocks/">
     <Project Path="BuildingBlocks/BuildingBlocks.csproj" />
   </Folder>
-  <Folder Name="/BuildingBlocks/Common/" />
-  <Folder Name="/BuildingBlocks/Contracts/" />
   <Folder Name="/Services/" />
   <Folder Name="/Services/Booking/">
     <Project Path="FlightBookingAPI/ABS.Booking.Application/ABS.Booking.Application.csproj" />

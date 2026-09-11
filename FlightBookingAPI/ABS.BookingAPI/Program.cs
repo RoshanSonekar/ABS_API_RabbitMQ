@@ -1,8 +1,11 @@
+using ABS.Booking.Application.Consumers;
 using ABS.Booking.Core.Repositories;
 using ABS.Booking.Infrastructure.Repositories;
 using BuildingBlocks.Behaviors;
+using BuildingBlocks.Transit.Common;
 using FluentValidation;
 using HealthChecks.UI.Client;
+using MassTransit;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +40,19 @@ builder.Services.AddTransient<MediatR.IRequestHandler<ABS.Booking.Application.Co
 
 // Application Services
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+
+// MassTransit Configuration
+builder.Services.AddMassTransit(config=>
+{
+	config.AddConsumer<NotificationEventConsumer>();
+	config.UsingRabbitMq((context, cfg) =>	
+	{
+		cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+		cfg.ReceiveEndpoint(EventBusConstants.NotificationSentQueue, c =>
+		{ c.ConfigureConsumer<NotificationEventConsumer>(context);
+		});
+	});
+});
 
 // Cross-Cutting Services
 // 1. Register Health Check Services

@@ -9,7 +9,10 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using System.Data;
-
+using MassTransit;
+using BuildingBlocks.Transit.Contracts.EventBus.Messages;
+using BuildingBlocks.Transit.Common;
+using ABS.Payments.Application.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
 var assembly = typeof(Program).Assembly;
@@ -42,6 +45,20 @@ builder.Services.AddTransient<MediatR.IRequestHandler<ABS.Payments.Application.C
 
 // Application Services
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+
+// MassTransit Configuration
+builder.Services.AddMassTransit(config =>
+{
+	config.AddConsumer<FlightBookedConsumer>();
+	config.UsingRabbitMq((context, cfg) =>
+	{
+		cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+		cfg.ReceiveEndpoint(EventBusConstants.FlightBookedQueue, c =>
+		{
+			c.ConfigureConsumer<FlightBookedConsumer>(context);
+		});
+	});
+});
 
 // Cross-Cutting Services
 // 1. Register Health Check Services
